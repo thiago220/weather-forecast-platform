@@ -4,7 +4,7 @@ import { WeatherController } from '../controllers/WeatherController.js'
 
 const router = express.Router()
 
-router.get('/search', authenticateToken, WeatherController.searchByCity)
-router.get('/location', authenticateToken, WeatherController.searchByCoords)
+router.get('/weather', authenticateToken, WeatherController.getByCity)
+router.get('/weather/location', authenticateToken, WeatherController.getByLocation)
 
 export default router
