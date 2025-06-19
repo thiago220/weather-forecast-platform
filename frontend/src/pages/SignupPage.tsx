@@ -1,6 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import api from "../services/api";
+
+interface SignupData {
+  name: string
+  email: string
+  password: string
+}
+
 
 
 export default function SignupPage() {
@@ -8,23 +16,25 @@ export default function SignupPage() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
 
+  const signup = async (data: SignupData) => {
+    const res = await api.post('/auth/signup', data)
+    return res.data.token
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
+    e.preventDefault()
+    setError('')
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/signup`,
-        form
-      );
-      localStorage.setItem("token", res.data.token);
-      navigate("/dashboard");
+        const token = await signup(form)
+        localStorage.setItem('token', token)
+        navigate('/dashboard')
     } catch (err: any) {
-      setError(err.response?.data?.error || "Erro ao cadastrar.");
+        setError(err.response?.data?.error || 'Erro ao cadastrar.')
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
