@@ -1,70 +1,60 @@
-import { useState } from "react";
-import axios from "axios";
-import { useAuth } from "../contexts/AuthContext";
-import { Link } from "react-router-dom";
+import { useState } from 'react'
+import axios from 'axios'
+import { useAuth } from '../contexts/AuthContext'
+import { Link } from 'react-router-dom'
 
 export default function LoginPage() {
-  const { login } = useAuth();
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const { login } = useAuth()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
+    e.preventDefault()
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/login`,
-        form
-      );
-      login(res.data.token);
+      const res = await axios.post('http://localhost:3000/api/auth/login', {
+        email,
+        password,
+      })
+      login(res.data.token) 
     } catch (err: any) {
-      setError(err.response?.data?.error || "Erro ao fazer login.");
+      setError(err.response?.data?.message || 'Erro ao fazer login')
     }
-  };
+  }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="bg-white shadow-lg rounded-xl p-10 w-full max-w-sm">
-        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">
-          Login
-        </h1>
-        <form onSubmit={handleSubmit} className="space-y-5">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-gray-100">
+      <div className="w-full max-w-sm bg-white rounded-lg shadow p-6">
+        <h1 className="text-xl font-bold mb-4 text-center">Entrar</h1>
+        {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
-            name="email"
             type="email"
-            placeholder="E-mail"
-            value={form.email}
-            onChange={handleChange}
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            placeholder="Email"
+            className="w-full p-2 border rounded"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
           />
           <input
-            name="password"
             type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
             placeholder="Senha"
-            value={form.password}
-            onChange={handleChange}
+            className="w-full p-2 border rounded"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
           />
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-          >
+          <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded">
             Entrar
           </button>
-          {error && <p className="text-red-600 text-sm text-center">{error}</p>}
-          <p className="text-center text-sm text-gray-600">
-            Ainda não tem uma conta?{" "}
-            <Link to="/signup" className="text-blue-600 hover:underline">
-              Cadastre-se
-            </Link>
-          </p>
         </form>
+        <p className="mt-4 text-center text-sm">
+          Não tem conta?{' '}
+          <Link to="/signup" className="text-blue-600 hover:underline">
+            Cadastre-se
+          </Link>
+        </p>
       </div>
     </div>
-  );
+  )
 }
