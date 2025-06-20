@@ -2,7 +2,7 @@ import axios from 'axios'
 import { OPENWEATHER_API_KEY, OPENWEATHER_BASE_URL } from '../config/openWeather.js'
 import NodeCache from 'node-cache'
 
-const cache = new NodeCache({ stdTTL: 3600 }) 
+const cache = new NodeCache({ stdTTL: 600 }) 
 
 export class WeatherService {
   static async getByCity(city) {

@@ -2,7 +2,7 @@ import express from 'express'
 import authRoutes from './auth.routes.js'
 import weatherRoutes from './weather.routes.js'
 import historyRoutes from './history.routes.js'
-import { apiLimiter } from '../middlewares/rateLimiter'
+import { apiLimiter } from '../middlewares/rateLimiter.js'
 
 const router = express.Router()
 
