@@ -18,6 +18,11 @@ interface HistoryItem {
   _id: string
   query: string
   createdAt: string
+  weather: {
+    name: string
+    main: { temp: number; humidity: number }
+    weather: { description: string }[]
+  }
 }
 
 interface WeatherContextType {

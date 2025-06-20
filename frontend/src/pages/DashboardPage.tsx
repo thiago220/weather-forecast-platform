@@ -1,18 +1,20 @@
-import { useAuth } from '../contexts/AuthContext'
-import WeatherSearch from '../components/WeatherSearch'
-import WeatherByLocation from '../components/WeatherByLocation'
-import SearchHistory from '../components/SearchHistory'
+import { useAuth } from "../contexts/AuthContext";
+import WeatherSearch from "../components/WeatherSearch";
+import WeatherByLocation from "../components/WeatherByLocation";
+import SearchHistory from "../components/SearchHistory";
 
 export default function DashboardPage() {
-  const { user, logout } = useAuth()
+  const { user, logout } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
-      <div className="w-full max-w-md bg-white rounded shadow p-6 text-center mb-6">
-        <h1 className="text-xl font-bold mb-2">
-          Bem-vindo, {user?.name || 'usuário'}!
-        </h1>
-        <p className="text-gray-600 mb-4">Você está autenticado.</p>
+    <div className="min-h-screen bg-gray-100 p-6 w-full">
+      <div className="w-full flex justify-between items-center bg-white p-4 rounded shadow mb-6">
+        <div>
+          <h1 className="text-xl font-bold">
+            Bem-vindo, {user?.name || "usuário"}!
+          </h1>
+          <p className="text-gray-600 text-sm">Você está autenticado.</p>
+        </div>
         <button
           onClick={logout}
           className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
@@ -21,9 +23,17 @@ export default function DashboardPage() {
         </button>
       </div>
 
-      <WeatherByLocation />
-      <WeatherSearch />
-      <SearchHistory />
+      <div className="w-full bg-white p-4 rounded shadow mb-6">
+        <WeatherByLocation />
+      </div>
+
+      <div className="w-full bg-white p-4 rounded shadow mb-6">
+        <WeatherSearch />
+      </div>
+
+      <div className="w-full bg-white p-4 rounded shadow">
+        <SearchHistory />
+      </div>
     </div>
-  )
+  );
 }

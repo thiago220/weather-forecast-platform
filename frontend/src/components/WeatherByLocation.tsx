@@ -45,18 +45,16 @@ export default function WeatherByLocation() {
   }, [])
 
   return (
-    <div className="max-w-md mx-auto p-4 bg-white rounded shadow">
+    <div className="w-full">
       <h2 className="text-xl font-semibold mb-4">Clima na sua localização</h2>
 
       {loading && <LoadingSpinner message="Obtendo localização..." />}
       {error && <ErrorBox message={error} />}
 
       {weather && (
-        <div className="bg-gray-100 p-4 rounded mt-2">
+        <div className="bg-gray-100 p-4 rounded">
           <h3 className="text-lg font-medium">{weather.name}</h3>
-          <p className="capitalize">{weather.weather[0].description}</p>
-          <p>🌡 Temp: {weather.main.temp}°C</p>
-          <p>💧 Umidade: {weather.main.humidity}%</p>
+          <p><span className="capitalize">{weather.weather[0].description}</span> -🌡 Temp: {weather.main.temp}°C - 💧 Umidade: {weather.main.humidity}%</p>
         </div>
       )}
     </div>

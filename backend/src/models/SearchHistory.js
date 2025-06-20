@@ -1,19 +1,20 @@
 import { Schema, model } from 'mongoose'
 
 const SearchHistorySchema = new Schema({
-  userId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: 'User'
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  query: { type: String, required: true },
+  weather: {
+    name: String,
+    main: {
+      temp: Number,
+      humidity: Number,
+    },
+    weather: [{
+      description: String,
+    }],
   },
-  query: {
-    type: String,
-    required: true
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
+  createdAt: { type: Date, default: Date.now }
 })
+
 
 export default model('SearchHistory', SearchHistorySchema)
