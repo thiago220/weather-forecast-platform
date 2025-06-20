@@ -5,11 +5,11 @@
   "author": "Thiago Dias",
   "license": "MIT",
   "type": "module",
-  "main": "src/server.js",
+  "main": "server.js",
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "start": "node src/server.js",
-    "test": "jest --runInBand",
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "test": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
@@ -29,15 +29,12 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.1",
     "jest": "^29.7.0",
     "nodemon": "^3.1.10",
     "prettier": "^3.5.3",
     "supertest": "^6.3.4"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "coverageDirectory": "tests/coverage"
   },
   "engines": {
     "node": ">=18.0.0"
