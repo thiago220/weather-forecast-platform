@@ -3,19 +3,24 @@ import jwt from 'jsonwebtoken'
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecret'
 
 export function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization']
+  const authHeader = req.headers.authorization
 
-  const token = authHeader && authHeader.split(' ')[1]
-  if (!token) {
+  if (!authHeader) {
     return res.status(401).json({ error: 'Token não fornecido' })
   }
 
-  jwt.verify(token, JWT_SECRET, (err, payload) => {
-    if (err) {
-      return res.status(403).json({ error: 'Token inválido' })
+  const [, token] = authHeader.split(' ')
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET)
+
+    if (typeof decoded === 'object' && 'id' in decoded) {
+      req.user = decoded
+      return next()
     }
 
-    req.userId = payload.id
-    next()
-  })
+    return res.status(401).json({ error: 'Token malformado' })
+  } catch (err) {
+    return res.status(401).json({ error: 'Token inválido' })
+  }
 }

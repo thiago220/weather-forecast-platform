@@ -1,5 +1,6 @@
 import { WeatherService } from '../services/WeatherService.js'
 import { citySchema, coordsSchema } from '../validators/weatherValidator.js'
+import SearchHistory from '../models/SearchHistory.js'
 
 export class WeatherController {
   static async getByCity(req, res) {
@@ -7,6 +8,11 @@ export class WeatherController {
     if (error) return res.status(400).json({ error: error.details[0].message })
 
     const data = await WeatherService.getByCity(value.city)
+
+    if (req.user?.id && value.city) {
+        await SearchHistory.create({ userId: req.user.id, query: value.city })
+    }
+
     const links = {
         self: `/weather?city=${encodeURIComponent(value.city)}`,
         by_location: `/weather/location?lat=${data.coord.lat}&lon=${data.coord.lon}`,

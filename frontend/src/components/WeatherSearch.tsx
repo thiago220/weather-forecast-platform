@@ -1,32 +1,15 @@
 import { useState } from 'react'
-import api from '../services/api'
+import { useWeatherContext } from '../contexts/WeatherContext'
 import LoadingSpinner from './feedback/LoadingSpinner'
 import ErrorBox from './feedback/ErrorBox'
 
-interface WeatherData {
-  name: string
-  main: { temp: number; humidity: number }
-  weather: { description: string }[]
-}
-
 export default function WeatherSearch() {
   const [city, setCity] = useState('')
-  const [weather, setWeather] = useState<WeatherData | null>(null)
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const { data: weather, loading, error, fetchWeatherByCity } = useWeatherContext()
 
-  const fetchWeather = async () => {
-    setLoading(true)
-    setError('')
-    try {
-      const res = await api.get(`/weather?city=${city}`)
-      setWeather(res.data.data)
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Erro ao buscar clima.')
-      setWeather(null)
-    } finally {
-      setLoading(false)
-    }
+  const handleSearch = () => {
+    if (!city.trim()) return
+    fetchWeatherByCity(city)
   }
 
   return (
@@ -42,7 +25,7 @@ export default function WeatherSearch() {
           className="flex-1 border border-gray-300 rounded px-3 py-2"
         />
         <button
-          onClick={fetchWeather}
+          onClick={handleSearch}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
           Buscar

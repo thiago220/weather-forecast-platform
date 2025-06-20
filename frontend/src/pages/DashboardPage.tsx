@@ -1,6 +1,7 @@
 import { useAuth } from '../contexts/AuthContext'
 import WeatherSearch from '../components/WeatherSearch'
 import WeatherByLocation from '../components/WeatherByLocation'
+import SearchHistory from '../components/SearchHistory'
 
 export default function DashboardPage() {
   const { user, logout } = useAuth()
@@ -22,6 +23,7 @@ export default function DashboardPage() {
 
       <WeatherByLocation />
       <WeatherSearch />
+      <SearchHistory />
     </div>
   )
 }
