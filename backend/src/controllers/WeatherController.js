@@ -1,9 +1,8 @@
-import { Request, Response } from 'express'
-import { WeatherService } from '@/services/WeatherService'
-import { citySchema, coordsSchema } from '@/validators/weatherValidator'
+import { WeatherService } from '../services/WeatherService.js'
+import { citySchema, coordsSchema } from '../validators/weatherValidator.js'
 
 export class WeatherController {
-  static async getByCity(req: Request, res: Response) {
+  static async getByCity(req, res) {
     const { error, value } = citySchema.validate(req.query)
     if (error) return res.status(400).json({ error: error.details[0].message })
 
@@ -20,7 +19,7 @@ export class WeatherController {
     })
   }
 
-  static async getByLocation(req: Request, res: Response) {
+  static async getByLocation(req, res) {
     const { error, value } = coordsSchema.validate(req.query)
     if (error) return res.status(400).json({ error: error.details[0].message })
 

@@ -1,11 +1,11 @@
 import axios from 'axios'
-import { OPENWEATHER_API_KEY, OPENWEATHER_BASE_URL } from '@/config/openWeather'
+import { OPENWEATHER_API_KEY, OPENWEATHER_BASE_URL } from '../config/openWeather.js'
 import NodeCache from 'node-cache'
 
 const cache = new NodeCache({ stdTTL: 3600 }) 
 
 export class WeatherService {
-  static async getByCity(city: string) {
+  static async getByCity(city) {
     const cacheKey = `city:${city.toLowerCase()}`
     const cached = cache.get(cacheKey)
     if (cached) return cached
@@ -20,8 +20,8 @@ export class WeatherService {
     return res.data
   }
 
-  static async getByCoordinates(lat: string, lon: string) {
-    const cacheKey = `city:${city.toLowerCase()}`
+  static async getByCoordinates(lat, lon) {
+    const cacheKey = `coords:${lat},${lon}`
     const cached = cache.get(cacheKey)
     if (cached) return cached
     const res = await axios.get(`${OPENWEATHER_BASE_URL}/weather`, {

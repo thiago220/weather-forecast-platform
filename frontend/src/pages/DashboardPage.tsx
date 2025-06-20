@@ -1,12 +1,16 @@
 import { useAuth } from '../contexts/AuthContext'
+import WeatherSearch from '../components/WeatherSearch'
+import WeatherByLocation from '../components/WeatherByLocation'
 
 export default function DashboardPage() {
   const { user, logout } = useAuth()
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center p-6 bg-white rounded shadow">
-        <h1 className="text-xl font-bold mb-4">Bem-vindo, {user?.name || 'usuário'}!</h1>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
+      <div className="w-full max-w-md bg-white rounded shadow p-6 text-center mb-6">
+        <h1 className="text-xl font-bold mb-2">
+          Bem-vindo, {user?.name || 'usuário'}!
+        </h1>
         <p className="text-gray-600 mb-4">Você está autenticado.</p>
         <button
           onClick={logout}
@@ -15,6 +19,9 @@ export default function DashboardPage() {
           Sair
         </button>
       </div>
+
+      <WeatherByLocation />
+      <WeatherSearch />
     </div>
   )
 }
