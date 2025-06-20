@@ -25,8 +25,7 @@ export class WeatherController {
 
     const links = {
       self: `/weather?city=${encodeURIComponent(value.city)}`,
-      by_location: `/weather/location?lat=${data.coord.lat}&lon=${data.coord.lon}`,
-      forecast: `/forecast?city=${encodeURIComponent(value.city)}`,
+      by_location: `/weather/location?lat=${data.coord.lat}&lon=${data.coord.lon}`
     };
 
     return res.status(200).json({
@@ -39,15 +38,15 @@ export class WeatherController {
     const { error, value } = coordsSchema.validate(req.query);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
-    const data = await WeatherService.getByCoordinates(value.lat, value.lon);
+    const current = await WeatherService.getByCoordinates(value.lat, value.lon);
+    const forecast = await WeatherService.getForecastByCoordinates(value.lat, value.lon);
     const links = {
       self: `/weather/location?lat=${value.lat}&lon=${value.lon}`,
-      by_city: `/weather?city=${encodeURIComponent(data.name)}`,
-      forecast: `/forecast?lat=${value.lat}&lon=${value.lon}`,
+      by_city: `/weather?city=${encodeURIComponent(current.name)}`
     };
-
     return res.status(200).json({
-      data,
+      current,
+      forecast,
       _links: links,
     });
   }
